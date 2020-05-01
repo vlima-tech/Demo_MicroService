@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityframeworkCore.SqlServer" Version="3.1.1" />
+    <PackageReference Include="microsoft.extensions.configuration" Version="3.1.1" />
+    <PackageReference Include="microsoft.extensions.configuration.abstractions" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ConferIR.Framework.Bus.Abstractions\ConferIR.Framework.Bus.Abstractions.csproj" />
+    <ProjectReference Include="..\ConferIR.Framework.Bus\ConferIR.Framework.Bus.csproj" />
+    <ProjectReference Include="..\ConferIR.Framework.Environment.Abstractions\ConferIR.Framework.Environment.Abstractions.csproj" />
+    <ProjectReference Include="..\ConferIR.Framework.Environment\ConferIR.Framework.Environment.csproj" />
+    <ProjectReference Include="..\ConferIR.Framework.Pipeline.Abstractions\ConferIR.Framework.Pipeline.Abstractions.csproj" />
+    <ProjectReference Include="..\ConferIR.Framework.Pipeline\ConferIR.Framework.Pipeline.csproj" />
+    <ProjectReference Include="..\ConferIR.Framework.REST.Abstractions\ConferIR.Framework.REST.Abstractions.csproj" />
+    <ProjectReference Include="..\ConferIR.Framework.REST\ConferIR.Framework.REST.csproj" />
+    <ProjectReference Include="..\ConferIR.Framework.Worker.Data\ConferIR.Framework.Worker.Data.csproj" />
+    <ProjectReference Include="..\ConferIR.Framework.Worker\ConferIR.Framework.Worker.csproj" />
+  </ItemGroup>
+
+</Project>

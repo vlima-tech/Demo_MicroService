@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Praticis.Framework.Bus.Abstractions\Praticis.Framework.Bus.Abstractions.csproj" />
+    <ProjectReference Include="..\Praticis.Framework.Pipeline.Abstractions\Praticis.Framework.Pipeline.Abstractions.csproj" />
+    <ProjectReference Include="..\Praticis.Framework.Tools\Praticis.Framework.Tools.csproj" />
+  </ItemGroup>
+
+</Project>
