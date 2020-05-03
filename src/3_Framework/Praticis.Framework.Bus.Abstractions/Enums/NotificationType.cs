@@ -10,9 +10,9 @@ namespace Praticis.Framework.Bus.Abstractions.Enums
     public enum NotificationType
     {
         /// <summary>
-        /// Represents an entry log of the system.
+        /// Represents a domain notification event.
         /// </summary>
-        Log = 1,
+        Domain_Notification = 1,
 
         /// <summary>
         /// Represents a non critical system error. But a message that need be show to User.
@@ -20,15 +20,15 @@ namespace Praticis.Framework.Bus.Abstractions.Enums
         Warning = 2,
 
         /// <summary>
-        /// Represents an error of System. Contains sensitive informations and this can't be show to user.
+        /// Represents an entry log of the system.
         /// </summary>
-        System_Error = 3,
+        Log = 3,
 
         /// <summary>
-        /// Represents a Domain Error (validation errors generally).
+        /// Represents an error of System. Contains sensitive informations and this can't be show to user.
         /// </summary>
-        Notification = 4,
-        
+        System_Error = 4,
+
         /// <summary>
         /// Represents a pipeline execution notification.
         /// </summary>

@@ -40,6 +40,6 @@ namespace Praticis.Framework.Bus.Abstractions.Events
         /// <summary>
         /// The assembly context of the event.
         /// </summary>
-        Type ResourceName { get; }
+        Type ResourceType { get; }
     }
 }

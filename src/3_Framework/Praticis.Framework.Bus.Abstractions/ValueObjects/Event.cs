@@ -46,7 +46,7 @@ namespace Praticis.Framework.Bus.Abstractions.ValueObjects
         /// <summary>
         /// The assembly context of event.
         /// </summary>
-        public Type ResourceName { get; set; }
+        public Type ResourceType { get; set; }
 
         /// <summary>
         /// The work type of event.
@@ -68,7 +68,7 @@ namespace Praticis.Framework.Bus.Abstractions.ValueObjects
             this.EventId = Guid.NewGuid();
             this.EventName = this.GetType().Name;
             this.Time = DateTime.Now;
-            this.ResourceName = this.GetType();
+            this.ResourceType = this.GetType();
             this.EventType = eventType;
             this.ExecutionMode = executionMode;
             this.StoreMode = storeMode;

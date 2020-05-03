@@ -17,6 +17,8 @@
   <ItemGroup>
     <ProjectReference Include="..\ConferIR.Framework.Worker\Praticis.Framework.Worker.csproj" />
     <ProjectReference Include="..\Praticis.Framework.Bus.Abstractions\Praticis.Framework.Bus.Abstractions.csproj" />
+    <ProjectReference Include="..\Praticis.Framework.Bus.Kafka.Abstractions\Praticis.Framework.Bus.Kafka.Abstractions.csproj" />
+    <ProjectReference Include="..\Praticis.Framework.Bus.Kafka\Praticis.Framework.Bus.Kafka.csproj" />
     <ProjectReference Include="..\Praticis.Framework.Bus\Praticis.Framework.Bus.csproj" />
     <ProjectReference Include="..\Praticis.Framework.Environment.Abstractions\Praticis.Framework.Environment.Abstractions.csproj" />
     <ProjectReference Include="..\Praticis.Framework.Environment\Praticis.Framework.Environment.csproj" />

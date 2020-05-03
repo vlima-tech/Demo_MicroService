@@ -29,7 +29,7 @@ namespace Praticis.Framework.Bus.Handlers
         {
             switch (notification.NotificationType)
             {
-                case NotificationType.Notification:
+                case NotificationType.Domain_Notification:
                     this._notifications?.Add(notification);
                     break;
 

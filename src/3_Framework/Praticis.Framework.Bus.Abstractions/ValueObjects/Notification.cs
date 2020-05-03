@@ -38,7 +38,7 @@ namespace Praticis.Framework.Bus.Abstractions.ValueObjects
         {
             this.Code = code;
             this.Value = value;
-            this.NotificationType = NotificationType.Notification;
+            this.NotificationType = NotificationType.Domain_Notification;
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Praticis.Framework.Bus.Abstractions.ValueObjects
         {
             this.Code = code;
             this.Value = value;
-            this.NotificationType = NotificationType.Notification;
+            this.NotificationType = NotificationType.Domain_Notification;
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Praticis.Framework.Bus.Abstractions.ValueObjects
             : base(EventType.Domain_Notification, ExecutionMode.WaitToClose, EventStoreMode.InMemory)
         {
             this.Value = value;
-            this.NotificationType = NotificationType.Notification;
+            this.NotificationType = NotificationType.Domain_Notification;
         }
 
         /// <summary>

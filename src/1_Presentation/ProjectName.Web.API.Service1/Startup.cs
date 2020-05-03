@@ -12,8 +12,8 @@ namespace ProjectName.Web.API.Service1
         {
             services.AddControllers();
 
-            services.AddPraticisFramework<Startup>(op => op.LoadAllModules());
             services.AddProjectNameModules();
+            services.AddPraticisFramework<Startup>(op => op.LoadAllModules());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

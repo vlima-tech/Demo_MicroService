@@ -15,44 +15,54 @@ namespace Praticis.Framework.Bus.Abstractions.Enums
         Domain_Notification = 1,
 
         /// <summary>
+        /// Represents a non critical system error. But a message that need be show to User.
+        /// </summary>
+        Warning = 2,
+
+        /// <summary>
+        /// Represents an entry log of the system.
+        /// </summary>
+        Log = 3,
+
+        /// <summary>
+        /// Represents an error of System. Contains sensitive informations and this can't be show to user.
+        /// </summary>
+        System_Error = 4,
+
+        /// <summary>
         /// Represents a pipline finished execution event.
         /// </summary>
-        Pipeline_Finished = 2,
+        Pipeline_Finished = 5,
 
         /// <summary>
         /// A work was created and waiting to enqueued after.
         /// </summary>
-        Work_Created = 3,
+        Work_Created = 6,
 
         /// <summary>
         /// A work is enqueued in memory waiting to start.
         /// </summary>
-        Work_Enqueued = 4,
+        Work_Enqueued = 7,
 
         /// <summary>
         /// A work started.
         /// </summary>
-        Work_Started = 4,
+        Work_Started = 8,
 
         /// <summary>
         /// A work finished execution successfully event.
         /// </summary>
-        Work_Finished = 5,
+        Work_Finished = 9,
 
         /// <summary>
         /// A work failed execution.
         /// Is published when a work execution failed.
         /// </summary>
-        Work_Failed = 6,
+        Work_Failed = 10,
 
         /// <summary>
-        /// An invalid ecac login.
+        /// Represents a new customer registration.
         /// </summary>
-        Ecac_Invalid_Login = 7,
-
-        /// <summary>
-        /// A valid ecac login.
-        /// </summary>
-        Ecac_Valid_Login = 8
+        Registered_Customer = 11,
     }
 }

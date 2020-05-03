@@ -42,6 +42,6 @@ namespace Praticis.Framework.Bus.Abstractions.Commands
         /// <summary>
         /// The assembly context of the Command.
         /// </summary>
-        Type ResourceName { get; }
+        Type ResourceType { get; }
     }
 }

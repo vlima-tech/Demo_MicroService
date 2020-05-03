@@ -48,7 +48,7 @@ namespace Praticis.Framework.Bus.Abstractions.ValueObjects
         /// <summary>
         /// The assembly context of command.
         /// </summary>
-        public Type ResourceName { get; protected set; }
+        public Type ResourceType { get; protected set; }
 
         #endregion
 
@@ -65,7 +65,7 @@ namespace Praticis.Framework.Bus.Abstractions.ValueObjects
         {
             this.CommandId = Guid.NewGuid();
             this.Time = DateTime.Now;
-            this.ResourceName = this.GetType();
+            this.ResourceType = this.GetType();
             this.CommandName = this.GetType().Name;
             this.ExecutionMode = executionMode;
             this.WorkType = WorkType.Command;
@@ -143,7 +143,7 @@ namespace Praticis.Framework.Bus.Abstractions.ValueObjects
         /// <summary>
         /// The assembly context of command.
         /// </summary>
-        public Type ResourceName { get; protected set; }
+        public Type ResourceType { get; protected set; }
 
         /// <summary>
         /// The output of command.
@@ -159,7 +159,7 @@ namespace Praticis.Framework.Bus.Abstractions.ValueObjects
         {
             this.CommandId = Guid.NewGuid();
             this.Time = DateTime.Now;
-            this.ResourceName = this.GetType();
+            this.ResourceType = this.GetType();
             this.CommandName = this.GetType().Name;
         }
 

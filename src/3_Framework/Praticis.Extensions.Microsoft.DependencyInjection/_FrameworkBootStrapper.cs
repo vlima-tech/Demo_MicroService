@@ -11,20 +11,23 @@ namespace Microsoft.Extensions.DependencyInjection
 
             options.Invoke(frameworkOptions);
             
-            if (frameworkOptions.LoadConfigurationModule)
+            if (frameworkOptions.UseConfigurationModule)
                 services.AddConfigurationModule();
 
-            if (frameworkOptions.LoadEnvironmentModule)
+            if (frameworkOptions.UseEnvironmentModule)
                 services.AddEnvironmentModule();
             
-            if (frameworkOptions.LoadPipelineModule)
+            if (frameworkOptions.UsePipelineModule)
                 services.AddPipelineModule();
             
-            if (frameworkOptions.LoadWorkerModule)
+            if (frameworkOptions.UseWorkerModule)
                 services.AddWorkerModule();
 
-            if(frameworkOptions.LoadAutoMapperModule)
+            if(frameworkOptions.UseAutoMapperModule)
                 services.AddAutoMapperModules();
+
+            if (frameworkOptions.UseKafkaBusModule)
+                services.AddKafkaBusModule();
 
             services.AddServiceBusModule();
         }

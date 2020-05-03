@@ -6,44 +6,41 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// Enable configuration module. Set 'True' to enable or 'False' to desable.
         /// </summary>
-        public bool LoadConfigurationModule { get; set; }
+        public bool UseConfigurationModule { get; set; }
 
         /// <summary>
         /// Enable environment module. Set 'True' to enable or 'False' to desable.
         /// </summary>
-        public bool LoadEnvironmentModule { get; set; }
+        public bool UseEnvironmentModule { get; set; }
 
         /// <summary>
         /// Enable loggin module. Set 'True' to enable or 'False' to desable.
         /// </summary>
-        public bool LoadLoggingModule { get; set; }
+        public bool UseLoggingModule { get; set; }
 
         /// <summary>
         /// Enable pipeline module. Set 'True' to enable or 'False' to desable.
         /// </summary>
-        public bool LoadPipelineModule { get; set; }
+        public bool UsePipelineModule { get; set; }
 
-        /// <summary>
-        /// Enable REST module. Set 'True' to enable or 'False' to desable.
-        /// </summary>
-        public bool LoadRESTModule { get; set; }
+        public bool UseWorkerModule { get; set; }
 
-        public bool LoadWorkerModule { get; set; }
+        public bool UseAutoMapperModule { get; set; }
 
-        public bool LoadAutoMapperModule { get; set; }
+        public bool UseKafkaBusModule { get; set; }
 
         /// <summary>
         /// Define all options modules with 'True'.
         /// </summary>
         public void LoadAllModules()
         {
-            this.LoadConfigurationModule = true;
-            this.LoadEnvironmentModule = true;
-            this.LoadLoggingModule = true;
-            this.LoadPipelineModule = true;
-            this.LoadRESTModule = true;
-            this.LoadWorkerModule = true;
-            this.LoadAutoMapperModule = true;
+            this.UseConfigurationModule = true;
+            this.UseEnvironmentModule = true;
+            this.UseLoggingModule = true;
+            this.UsePipelineModule = true;
+            this.UseWorkerModule = true;
+            this.UseAutoMapperModule = true;
+            this.UseKafkaBusModule = true;
         }
     }
 }

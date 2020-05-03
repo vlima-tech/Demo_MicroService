@@ -5,7 +5,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static void AddProjectNameModules(this IServiceCollection services)
         {
-            
+            services.AddCustomerModule();
         }
     }
 }

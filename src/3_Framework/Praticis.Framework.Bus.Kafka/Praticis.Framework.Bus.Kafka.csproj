@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ConferIR.Framework.Worker.Abstractions\Praticis.Framework.Worker.Abstractions.csproj" />
+    <ProjectReference Include="..\Praticis.Framework.Bus.Kafka.Abstractions\Praticis.Framework.Bus.Kafka.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Confluent.Kafka" Version="1.4.0" />
+  </ItemGroup>
+
+</Project>
