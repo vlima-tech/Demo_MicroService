@@ -1,42 +1,78 @@
 ﻿
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Confluent.Kafka;
-
+using Newtonsoft.Json;
 using Praticis.Framework.Bus.Abstractions;
-using Praticis.Framework.Bus.Abstractions.Enums;
 using Praticis.Framework.Bus.Kafka.Abstractions;
+using Praticis.Framework.Worker.Abstractions;
 using Praticis.Framework.Worker.Abstractions.Enums;
 
 namespace Praticis.Framework.Worker.Kafka.Data.Context
 {
     public class KafkaConsumerContext
     {
-        protected IKafkaConsumerSettings Options { get; private set; }
+        protected IKafkaConsumerOptions Options { get; private set; }
 
-        public KafkaConsumerContext(IKafkaConsumerSettings options)
+        public KafkaConsumerContext(IKafkaConsumerOptions options)
         {
             this.Options = options;
         }
 
         public IConsumer<KafkaKey, IWork> GenerateConsumer(QueueType queue)
         {
+            var deserializer = new KafkaConsumerDeserializer();
+
+            var options = this.Options.Where(o => o.Queue.QueueId == queue);
+
+            if(options.Select(c => c.GroupName).Distinct().Count() != 1)
+            {
+                // TODO: Sent System Error notification
+            }
+
             var config = new ConsumerConfig
             {
-                GroupId = this.Options.Group,
-                BootstrapServers = string.Join(';', this.Options.Brokers),
+                GroupId = options.First().GroupName,
+                BootstrapServers = string.Join(';', options.SelectMany(o => o.Brokers)),
+                AutoOffsetReset = AutoOffsetReset.Earliest
             };
 
             var builder = new ConsumerBuilder<KafkaKey, IWork>(config);
+
+            builder.SetKeyDeserializer(deserializer);
+            builder.SetValueDeserializer(deserializer);
+
             var container = builder.Build();
             
-            var topics = this.Options.Topics.Where(t => t.QueueId == queue)
-                .Select(t => t.Title);
+            var topics = options.SelectMany(o => o.Topics);
 
             container.Subscribe(topics);
 
             return container;
+        }
+    }
+
+    public class KafkaConsumerDeserializer : IDeserializer<KafkaKey>, IDeserializer<IWork>
+    {
+        private KafkaKey _key;
+
+        public KafkaKey Deserialize(ReadOnlySpan<byte> data, bool isNull, SerializationContext context)
+        {
+            var json = Encoding.Default.GetString(data.ToArray());
+
+            this._key = JsonConvert.DeserializeObject<KafkaKey>(json);
+
+            return this._key;
+        }
+        
+        IWork IDeserializer<IWork>.Deserialize(ReadOnlySpan<byte> data, bool isNull, SerializationContext context)
+        {
+            var json = Encoding.Default.GetString(data.ToArray());
+            
+            var work = JsonConvert.DeserializeObject(json, this._key.Type) as IWork;
+
+            return work;
         }
     }
 }

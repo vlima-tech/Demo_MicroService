@@ -37,10 +37,30 @@ namespace Praticis.Framework.Worker.Kafka.Data.Repositories
             {
                 do
                 {
-                    /*
-                    var task = Task.Run(() => this._consumer.Consume(cancellationToken));
-                    task.ContinueWith(r => ++count);
-                    */
+                    
+                    var conf = new ConsumerConfig
+                    {
+                        GroupId = "test-consumer-group_005",
+                        BootstrapServers = "localhost:9092",
+                        AutoOffsetReset = AutoOffsetReset.Earliest
+                    };
+
+                    var builder = new ConsumerBuilder<KafkaKey, IWork>(conf);
+                    var deserializer = new KafkaConsumerDeserializer();
+                    builder.SetKeyDeserializer(deserializer);
+                    builder.SetValueDeserializer(deserializer);
+
+                    using (var c = builder.Build())
+                    {
+                        c.Subscribe("registered-customers");
+                        var cr = c.Consume(cancellationToken);
+
+                    }
+                    
+                        /*
+                        var task = Task.Run(() => this._consumer.Consume(cancellationToken));
+                        task.ContinueWith(r => ++count);
+                        */
 
                     result = this._consumer.Consume(cancellationToken);
                     

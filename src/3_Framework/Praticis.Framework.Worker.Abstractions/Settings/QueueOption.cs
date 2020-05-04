@@ -5,7 +5,7 @@ using Praticis.Framework.Worker.Abstractions.Enums;
 
 namespace Praticis.Framework.Worker.Abstractions.Settings
 {
-    public class QueueSetting
+    public class QueueOption : IQueueOption
     {
         public QueueType QueueId { get; set; }
         public string Name { get; set; }
@@ -20,7 +20,7 @@ namespace Praticis.Framework.Worker.Abstractions.Settings
         /// <summary>
         /// Create a default queue
         /// </summary>
-        public QueueSetting()
+        public QueueOption()
         {
             this.QueueId = QueueType.Default;
             this.Name = "Default";
@@ -36,7 +36,7 @@ namespace Praticis.Framework.Worker.Abstractions.Settings
         /// <summary>
         /// Create a queue
         /// </summary>
-        public QueueSetting(QueueType queueType, string name, string description, 
+        public QueueOption(QueueType queueType, string name, string description, 
             int maxWip, int maxLength, int reloadLevel, TimeSpan reloadInterval,
             TimeSpan enqueueProcessTimeout, TimeSpan sleepInterval)
         {

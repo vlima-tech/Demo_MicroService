@@ -23,6 +23,7 @@
     <ProjectReference Include="..\Praticis.Framework.Environment\Praticis.Framework.Environment.csproj" />
     <ProjectReference Include="..\Praticis.Framework.Pipeline.Abstractions\Praticis.Framework.Pipeline.Abstractions.csproj" />
     <ProjectReference Include="..\Praticis.Framework.Pipeline\Praticis.Framework.Pipeline.csproj" />
+    <ProjectReference Include="..\Praticis.Framework.Worker.Kafka.Data\Praticis.Framework.Worker.Kafka.Data.csproj" />
     <ProjectReference Include="..\Praticis.Framework.Worker\Praticis.Framework.Worker.csproj" />
   </ItemGroup>
 

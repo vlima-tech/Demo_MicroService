@@ -2,11 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
-
-using Microsoft.Extensions.DependencyInjection;
 
 using Praticis.Framework.Bus.Abstractions;
 using Praticis.Framework.Bus.Abstractions.Commands;
@@ -16,7 +13,7 @@ using Praticis.Framework.Worker.Abstractions;
 using Praticis.Framework.Worker.Abstractions.Enums;
 using Praticis.Framework.Worker.Abstractions.Events;
 using Praticis.Framework.Worker.Abstractions.Repositories;
-using Praticis.Framework.Worker.Abstractions.ValueObjects;
+using Praticis.Framework.Worker.Abstractions.Settings;
 
 namespace Praticis.Framework.Worker.Core
 {
@@ -29,33 +26,31 @@ namespace Praticis.Framework.Worker.Core
         private Queue<Work> _enqueuedWorks { get; set; }
         private List<Work> _worksInExecution { get; set; }
         private List<Task> _tasksInExecution { get; set; }
+        private Task _reloadTask { get; set; }
         private CancellationToken _cancellationToken { get; set; }
-        private int _worksInEnqueProcess { get; set; }
-        private DateTime? _lastEnqueueProcess { get; set; }
         public DateTime LastReload { get; private set; }
-        public QueueSetting Settings { get; private set; }
+        public QueueOption Settings { get; private set; }
+        private IQueueReadRepository _queueRepository { get; set; }
         public bool Initialized { get; private set; }
         public bool IsRunning { get; private set; }
         public bool IsEmpty => this._enqueuedWorks.Count == 0;
         public bool InSafeMode { get; private set; }
         public int EmptyCapacity => this.Settings.MaxLength - this._enqueuedWorks.Count;
-        private Task reloadTask { get; set; }
-        private IServiceProvider _provider { get; set; }
+        
         #endregion
 
         #region Constructor
 
-        public QueueHostedService(IServiceBus serviceBus, IServiceProvider provider, 
-            QueueSetting queueSetting, bool startQueue = false)
+        public QueueHostedService(IServiceBus serviceBus, IQueueReadRepository queueRepository,
+            QueueOption queueSetting, bool startQueue = false)
         {
             this._serviceBus = serviceBus;
             this.QueueId = queueSetting.QueueId;
             this.Settings = queueSetting;
-            this._provider = provider;
-            this._worksInEnqueProcess = 0;
             this.Initialized = false;
             this.IsRunning = false;
             this.InSafeMode = true;
+            this._queueRepository = queueRepository;
 
             if (startQueue)
                 Task.Run(this.InitializeAsync);
@@ -84,7 +79,7 @@ namespace Praticis.Framework.Worker.Core
             while (!this._cancellationToken.IsCancellationRequested)
             {
                 if (this.CanRequestReload())
-                    this.reloadTask = Task.Run(() => this.ReloadAsync());
+                    this._reloadTask = Task.Run(() => this.ReloadAsync());
 
                 if (this.CanExecuteNewTask())
                 {
@@ -108,7 +103,6 @@ namespace Praticis.Framework.Worker.Core
         private Task StartTask(Work work)
         {
             Task task;
-            IWorkRepository workRepository;
 
             work.Request.ChangeExecutionMode(ExecutionMode.WaitToClose);
 
@@ -121,23 +115,10 @@ namespace Praticis.Framework.Worker.Core
                     task = this._serviceBus.PublishEvent((IEvent)work.Request);
                     break;
                 default:
-                    task = Task.CompletedTask;
-                    break;
+                    return Task.CompletedTask;
             }
 
-            work.DefineTaskId(task.Id);
-
-            work.StartProcessWhen(DateTime.Now);
-
-            workRepository = this._provider.CreateScope().ServiceProvider.GetService<IWorkRepository>();
-
-            workRepository.SaveAsync(work).GetAwaiter().GetResult();
-            workRepository.Commit();
-
-            workRepository.Dispose();
-            workRepository = null;
-
-            this._serviceBus.PublishEvent(new WorkStartedEvent(work))
+            this._serviceBus.PublishEvent(new StartedWorkEvent(work, task.Id, DateTime.Now))
                 .GetAwaiter()
                 .GetResult();
 
@@ -162,38 +143,20 @@ namespace Praticis.Framework.Worker.Core
             this._worksInExecution.Remove(work);
             this._tasksInExecution.Remove(task);
 
-            work.FinishProcessWhen(DateTime.Now);
-            work.ChangeStatusTo(WorkStatus.Processed);
-
-            var workRepository = this._provider.CreateScope().ServiceProvider.GetService<IWorkRepository>();
-
-            await workRepository.SaveAsync(work);
-            await workRepository.CommitAsync();
-
-            workRepository.Dispose();
-            workRepository = null;
-
-            await _serviceBus.PublishEvent(new WorkFinishedEvent(work, task.Id, DateTime.Now));
+            await _serviceBus.PublishEvent(new FinishedWorkEvent(work, task.Id, DateTime.Now));
         }
 
-
-        private void Enqueue(IEnumerable<Work> works)
+        private async Task EnqueueAsync(IEnumerable<Work> works)
         {
-            IWorkRepository workRepository;
+            List<Task> tasks = new List<Task>();
+            foreach (var work in works)
+            {
+                this._enqueuedWorks.Enqueue(work);
 
-            foreach (var item in works)
-                item.EnqueuedWhen(DateTime.Now);
+                tasks.Add(_serviceBus.PublishEvent(new EnqueuedWorkEvent(work, DateTime.Now)));
+            }
 
-            workRepository = this._provider.CreateScope().ServiceProvider.GetService<IWorkRepository>();
-
-            workRepository.SaveRangeAsync(works);
-            workRepository.Commit();
-
-            workRepository.Dispose();
-            workRepository = null;
-
-            foreach (var item in works)
-                this._enqueuedWorks.Enqueue(item);
+            await Task.WhenAll(tasks);
         }
 
         /// <summary>
@@ -202,66 +165,25 @@ namespace Praticis.Framework.Worker.Core
         /// </summary>
         /// <param name="safeMode"></param>
         /// <returns></returns>
-        private Task ReloadAsync(bool safeMode = false)
+        private async Task ReloadAsync(bool safeMode = false)
         {
-            Expression<Func<Work, bool>> loadSpecification, safeModeLoadSpecification;
-            List<Work> works = new List<Work>();
-            IWorkReadRepository workReadRepository;
-
             this.LastReload = DateTime.Now;
-            workReadRepository = this._provider.CreateScope().ServiceProvider.GetService<IWorkReadRepository>();
 
-            safeModeLoadSpecification = WorkSpec.LoadWorks(this.QueueId, WorkStatus.Processing | WorkStatus.Enqueued);
-            loadSpecification = WorkSpec.LoadWorks(this.QueueId, WorkStatus.Created);
+            var works = await this._queueRepository.DequeueWorksAsync(this.EmptyCapacity, this._cancellationToken);
 
-            // recovery possible works that has executing but system was stopped and having aborted executions.
-            if (safeMode || this.InSafeMode)
-            {
-                works = workReadRepository.Query(safeModeLoadSpecification, 1, this.EmptyCapacity, true)
-                    .OrderBy(w => w.EnqueueDate)
-                    .ToList();
-            }
-
-            // reload new works after all aborted execution has enqueued.
-            if(this.EmptyCapacity - works.Count > 0)
-            {
-                this.InSafeMode = false;
-                int remainingCapacity = this.EmptyCapacity - works.Count;
-
-                works.AddRange(
-                    workReadRepository.Query(loadSpecification, 1, remainingCapacity, true)
-                        .OrderBy(w => w.CreationDate)
-                        .ToList()
-                );
-            }
-            else
-            { }
-
-            if (works.Count > 0)
-                this.Enqueue(works);
-
-            this._lastEnqueueProcess = DateTime.Now;
-
-            workReadRepository.Dispose();
-            workReadRepository = null;
-
-            return Task.CompletedTask;
+            if (works.Count() > 0)
+                await this.EnqueueAsync(works);
         }
 
         private bool CanExecuteNewTask()
-        {
-            if (this._enqueuedWorks.Count > 0 && this._enqueuedWorks.Count == this._worksInEnqueProcess)
-                return false;
-
-            return this._enqueuedWorks.Count > 0 && this._tasksInExecution.CanExecuteNewTask(Settings.MaxWIP);
-        }
+            => this._enqueuedWorks.Count > 0 && this._tasksInExecution.CanExecuteNewTask(Settings.MaxWIP);
 
         private bool CanRequestReload()
         {
-            if (this.reloadTask is null)
+            if (this._reloadTask is null)
                 return true;
 
-            if (!this.reloadTask.IsCompleted)
+            if (!this._reloadTask.IsCompleted)
                 return false;
 
             var lastReload = DateTime.Now - this.LastReload;
@@ -287,7 +209,7 @@ namespace Praticis.Framework.Worker.Core
 
         public void Dispose()
         {
-            GC.Collect();
+            this._cancellationToken = new CancellationToken(true);
         }
     }
 }

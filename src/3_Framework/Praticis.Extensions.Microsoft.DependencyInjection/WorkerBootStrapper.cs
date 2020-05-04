@@ -6,12 +6,18 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 
 using Praticis.Framework.Bus.Abstractions;
+using Praticis.Framework.Bus.Abstractions.Enums;
 using Praticis.Framework.Bus.Kafka.Abstractions;
+using Praticis.Framework.Bus.Kafka.Abstractions.Collections;
 using Praticis.Framework.Bus.Kafka.Abstractions.Settings;
 using Praticis.Framework.Worker.Abstractions;
+using Praticis.Framework.Worker.Abstractions.Repositories;
+using Praticis.Framework.Worker.Abstractions.Settings;
 using Praticis.Framework.Worker.Application.Commands;
 using Praticis.Framework.Worker.Core;
 using Praticis.Framework.Worker.Handlers.Commands;
+using Praticis.Framework.Worker.Kafka.Data.Context;
+using Praticis.Framework.Worker.Kafka.Data.Repositories;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -33,7 +39,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 foreach (var queueSetting in queueSettings)
                 {
                     provider = serviceProvider.CreateScope().ServiceProvider;
-                    //queues.Add(new QueueHostedService(provider.GetService<IServiceBus>(), provider, queueSetting));
+                    queues.Add(new QueueHostedService(provider.GetService<IServiceBus>(), new QueueReadRepository(provider.GetService<KafkaConsumerContext>(), queueSetting.QueueId), queueSetting));
                 }
                 
                 return new WorkerHostedService(queues);
@@ -46,18 +52,34 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static void AddKafkaWorkerModule(this IServiceCollection services)
         {
-            services.AddSingleton<IKafkaConsumerSettings>(provider =>
+            services.AddSingleton<IKafkaConsumerOptions>(provider =>
             {
-                var kafkaOptions = new KafkaConsumerOptions();
+                var config = new List<KafkaConsumerOption>();
 
-                var worker = provider.GetService<IWorker>();
+                provider.GetService<IConfiguration>().GetSection("Kafka:Consumers").Bind(config);
 
-                provider.GetService<IConfiguration>().GetSection("Kafka:Consumers")
-                    .Bind(kafkaOptions);
+                config.Add(new KafkaConsumerOption
+                {
+                    Topics = new List<string> { "registered-customers" },
+                    GroupName = "MicroService1",
+                    Brokers = new List<string> { "localhost:9092" },
+                    FilterStrategy = Praticis.Framework.Bus.Kafka.Abstractions.Enums.FilterStrategy.Capture_Types,
+                    EventTypes = new List<EventType> { EventType.Registered_Customer },
+                    Queue = new QueueOption
+                    {
+                        QueueId = Praticis.Framework.Worker.Abstractions.Enums.QueueType.Registered_Customers,
+                        MaxWIP = 2,
+                        MaxLength = 1000,
+                        ReloadLevel = 100,
+                    }
+                });
 
-
-                return kafkaOptions;
+                return new KafkaConsumerOptionCollection(config);
             });
+
+            services.AddScoped<KafkaConsumerContext>();
+
+            //services.AddScoped<IQueueReadRepository, QueueReadRepository>();
         }
     }
 }

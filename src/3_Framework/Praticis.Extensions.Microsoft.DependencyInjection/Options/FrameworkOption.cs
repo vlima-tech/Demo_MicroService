@@ -29,6 +29,8 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public bool UseKafkaBusModule { get; set; }
 
+        public bool UseKafkaWorkerModule { get; set; }
+
         /// <summary>
         /// Define all options modules with 'True'.
         /// </summary>
@@ -41,6 +43,7 @@ namespace Microsoft.Extensions.DependencyInjection
             this.UseWorkerModule = true;
             this.UseAutoMapperModule = true;
             this.UseKafkaBusModule = true;
+            this.UseKafkaWorkerModule = true;
         }
     }
 }

@@ -29,16 +29,16 @@ namespace Praticis.Framework.Bus.Kafka.Handlers
 
         public async Task Handle(EnqueueWorkEvent notification, CancellationToken cancellationToken)
         {
-            var producers = this._kafkaOptions.IdentifyListeners(notification.EventType);
+            var producers = this._kafkaOptions.IdentifyListeners(notification.Work.EventType);
 
             if (!producers.Any())
                 return;
 
             var tasks = new List<Task>();
-
+            
             try
             {
-                var msg = notification.GenerateMessage();
+                var msg = notification.Work.GenerateKafkaMessage();
 
                 producers.SelectMany(o => o.Brokers)
                     .ToList()

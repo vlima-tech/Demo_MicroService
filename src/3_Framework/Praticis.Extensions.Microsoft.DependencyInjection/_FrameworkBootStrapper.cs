@@ -29,6 +29,9 @@ namespace Microsoft.Extensions.DependencyInjection
             if (frameworkOptions.UseKafkaBusModule)
                 services.AddKafkaBusModule();
 
+            if (frameworkOptions.UseKafkaWorkerModule)
+                services.AddKafkaWorkerModule();
+
             services.AddServiceBusModule();
         }
     }

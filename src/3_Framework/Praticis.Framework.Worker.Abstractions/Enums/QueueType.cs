@@ -27,6 +27,8 @@ namespace Praticis.Framework.Worker.Abstractions.Enums
         [Display(Name = "Default")]
         Default = 0,
 
+        Registered_Customers = 1,
+
         /*
             ### ATENÇÃO!! ###
 

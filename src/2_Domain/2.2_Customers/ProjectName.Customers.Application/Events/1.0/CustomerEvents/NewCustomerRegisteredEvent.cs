@@ -11,7 +11,7 @@ namespace ProjectName.Customers.Application.Events._1._0.CustomerEvents
         public CustomerViewModel Customer { get; private set; }
 
         public NewCustomerRegisteredEvent(CustomerViewModel customer)
-            : base(EventType.Registered_Customer, ExecutionMode.WaitToClose, EventStoreMode.CloudStore)
+            : base(EventType.Registered_Customer, ExecutionMode.Enqueue, EventStoreMode.CloudStore)
         {
             this.Customer = customer;
         }

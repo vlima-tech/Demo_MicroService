@@ -11,7 +11,7 @@ namespace Praticis.Framework.Bus.Kafka.Abstractions.Collections
 {
     public class KafkaProducerOptionCollection : List<IKafkaProducerOption>, IKafkaProducerOptions
     {
-        #region MyRegion
+        #region Constructors
 
         public KafkaProducerOptionCollection()
         { }

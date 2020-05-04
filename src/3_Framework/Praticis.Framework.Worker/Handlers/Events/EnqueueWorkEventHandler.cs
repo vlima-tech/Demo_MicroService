@@ -10,11 +10,10 @@ using Praticis.Framework.Worker.Abstractions.Repositories;
 
 namespace Praticis.Framework.Worker.Handlers.Events
 {
-    /*
     public class EnqueueWorkEventHandler : IEventHandler<EnqueueWorkEvent>
     {
-        private readonly IWorkRepository _workRepository;
         private readonly IWorkAnalyzer _workAnalyzer;
+        private IWorkRepository _workRepository { get; set; }
 
         public EnqueueWorkEventHandler(IServiceProvider serviceProvider)
         {
@@ -22,8 +21,9 @@ namespace Praticis.Framework.Worker.Handlers.Events
             this._workAnalyzer = serviceProvider.GetService<IWorkAnalyzer>();
         }
 
-        public async Task Handle(EnqueueWorkEvent notification, CancellationToken cancellationToken)
+        public Task Handle(EnqueueWorkEvent notification, CancellationToken cancellationToken)
         {
+            /*
             var work = new Work(notification.Work);
 
             var queueType = this._workAnalyzer.WhereEnqueue(work.Request);
@@ -31,12 +31,15 @@ namespace Praticis.Framework.Worker.Handlers.Events
 
             await this._workRepository.SaveAsync(work);
             await this._workRepository.CommitAsync();
+            */
+
+            return Task.CompletedTask;
         }
 
         public void Dispose()
         {
-
+            this._workRepository?.Dispose();
+            this._workRepository = null;
         }
     }
-    */
 }
