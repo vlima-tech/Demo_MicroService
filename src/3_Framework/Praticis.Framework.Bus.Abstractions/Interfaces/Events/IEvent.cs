@@ -28,11 +28,6 @@ namespace Praticis.Framework.Bus.Abstractions.Events
         DateTime Time { get; }
 
         /// <summary>
-        /// The event type.
-        /// </summary>
-        EventType EventType { get; }
-
-        /// <summary>
         /// The event store mode.
         /// </summary>
         EventStoreMode StoreMode { get; }

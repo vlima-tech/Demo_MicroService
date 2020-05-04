@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Settings\KafkaProducerSettings.cs~RF574d144.TMP" />
+    <PackageReference Include="Confluent.Kafka" Version="1.4.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Praticis.Framework.Bus.Abstractions\Praticis.Framework.Bus.Abstractions.csproj" />
+    <ProjectReference Include="..\Praticis.Framework.Bus.Kafka.Abstractions\Praticis.Framework.Bus.Kafka.Abstractions.csproj" />
     <ProjectReference Include="..\Praticis.Framework.Worker.Abstractions\Praticis.Framework.Worker.Abstractions.csproj" />
   </ItemGroup>
 

@@ -10,6 +10,11 @@ namespace Praticis.Framework.Bus.Abstractions.Enums
     public enum EventType
     {
         /// <summary>
+        /// Representas a default event.
+        /// </summary>
+        Default = 0,
+
+        /// <summary>
         /// Represents a domain notification event.
         /// </summary>
         Domain_Notification = 1,

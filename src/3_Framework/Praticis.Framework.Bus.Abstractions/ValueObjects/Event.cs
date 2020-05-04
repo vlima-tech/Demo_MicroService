@@ -9,7 +9,7 @@ namespace Praticis.Framework.Bus.Abstractions.ValueObjects
     /// <summary>
     /// Represents an event of application.
     /// </summary>
-    public abstract class Event : IEvent, IDisposable
+    public abstract class Event : IEvent
     {
         #region Properties
 
@@ -29,7 +29,7 @@ namespace Praticis.Framework.Bus.Abstractions.ValueObjects
         public DateTime Time { get; protected set; }
 
         /// <summary>
-        /// The type of event.
+        /// The event type represented by command.
         /// </summary>
         public EventType EventType { get; protected set; }
 
@@ -90,16 +90,13 @@ namespace Praticis.Framework.Bus.Abstractions.ValueObjects
 
         #endregion
 
-        public virtual void Dispose()
-        {
-            GC.SuppressFinalize(this);
-        }
-
         public void ChangeExecutionMode(ExecutionMode executionMode)
             => this.ExecutionMode = executionMode;
 
-        public Guid GetRequestId() => this.EventId;
+        public Guid ObtainsRequestId() => this.EventId;
 
         public void ChangeRequestId(Guid id) => this.EventId = id;
+
+        public string ObtainsWorkName() => this.EventName;
     }
 }

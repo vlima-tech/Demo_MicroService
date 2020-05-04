@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ConferIR.Framework.Worker.Abstractions\Praticis.Framework.Worker.Abstractions.csproj" />
     <ProjectReference Include="..\Praticis.Framework.Bus.Kafka.Abstractions\Praticis.Framework.Bus.Kafka.Abstractions.csproj" />
   </ItemGroup>
 

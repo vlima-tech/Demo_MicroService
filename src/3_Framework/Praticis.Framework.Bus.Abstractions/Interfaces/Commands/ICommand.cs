@@ -25,11 +25,6 @@ namespace Praticis.Framework.Bus.Abstractions.Commands
         Guid CommandId { get; }
 
         /// <summary>
-        /// The Id of Root Entity involved in Command Execution.
-        /// </summary>
-        Guid? AggregateId { get; }
-
-        /// <summary>
         /// The command name.
         /// </summary>
         string CommandName { get; }

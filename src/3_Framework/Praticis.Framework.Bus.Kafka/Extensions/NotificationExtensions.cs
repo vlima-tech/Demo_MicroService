@@ -1,24 +1,21 @@
 ﻿
-using System;
-using System.Collections.Generic;
-
 using Confluent.Kafka;
 
-using Praticis.Framework.Bus.Abstractions.Enums;
+using Praticis.Framework.Bus.Kafka.Abstractions;
 
 namespace Praticis.Framework.Bus.Abstractions.ValueObjects
 {
     public static class NotificationExtensions
     {
-        public static Message<KeyValuePair<EventType, Type>, IWork> GenerateMessage(this Event notification)
+        public static Message<KafkaKey, IWork> GenerateMessage(this EnqueueWorkEvent notification)
         {
-            var key = notification.EventType;
-            var type = notification.ResourceType;
+            var eventType = notification.EventType;
+            var workType = notification.Work.GetType();
 
-            return new Message<KeyValuePair<EventType, Type>, IWork>
+            return new Message<KafkaKey, IWork>
             {
-                Key = new KeyValuePair<EventType, Type>(key, type),
-                Value = notification
+                Key = new KafkaKey(eventType, workType),
+                Value = notification.Work
             };
         }
     }

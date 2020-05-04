@@ -6,9 +6,10 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 
 using Praticis.Framework.Bus.Abstractions;
+using Praticis.Framework.Bus.Kafka.Abstractions;
+using Praticis.Framework.Bus.Kafka.Abstractions.Settings;
 using Praticis.Framework.Worker.Abstractions;
 using Praticis.Framework.Worker.Application.Commands;
-using Praticis.Framework.Worker.Application.ViewModels;
 using Praticis.Framework.Worker.Core;
 using Praticis.Framework.Worker.Handlers.Commands;
 
@@ -32,7 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 foreach (var queueSetting in queueSettings)
                 {
                     provider = serviceProvider.CreateScope().ServiceProvider;
-                    queues.Add(new QueueHostedService(provider.GetService<IServiceBus>(), provider, queueSetting));
+                    //queues.Add(new QueueHostedService(provider.GetService<IServiceBus>(), provider, queueSetting));
                 }
                 
                 return new WorkerHostedService(queues);
@@ -40,10 +41,23 @@ namespace Microsoft.Extensions.DependencyInjection
 
 
             // Commands
-
             services.AddScoped<IRequestHandler<TestCommand, bool>, TestCommandHandler>();
-            services.AddScoped<IRequestHandler<LoadWorksCommand, WorksPaginatedViewModel>, LoadWorksCommandHandler>();
-            services.AddScoped<IRequestHandler<LoadAllWorksCommand, List<WorkViewModel>>, LoadAllWorksCommandHandler>();
+        }
+
+        public static void AddKafkaWorkerModule(this IServiceCollection services)
+        {
+            services.AddSingleton<IKafkaConsumerSettings>(provider =>
+            {
+                var kafkaOptions = new KafkaConsumerOptions();
+
+                var worker = provider.GetService<IWorker>();
+
+                provider.GetService<IConfiguration>().GetSection("Kafka:Consumers")
+                    .Bind(kafkaOptions);
+
+
+                return kafkaOptions;
+            });
         }
     }
 }

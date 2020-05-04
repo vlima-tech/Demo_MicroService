@@ -51,17 +51,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Praticis.Extensions.Microso
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Worker", "Worker", "{E8301F26-7659-44E2-BB75-7E5ACF95F7C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Praticis.Framework.Worker.Abstractions", "src\3_Framework\ConferIR.Framework.Worker.Abstractions\Praticis.Framework.Worker.Abstractions.csproj", "{2DB9B9CD-72EA-4A21-8017-1321EAA0F2D4}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Praticis.Framework.Worker.Application", "src\3_Framework\ConferIR.Framework.Worker.Application\Praticis.Framework.Worker.Application.csproj", "{231D197F-3B80-4942-9F48-F806B37F383D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Praticis.Framework.Worker", "src\3_Framework\ConferIR.Framework.Worker\Praticis.Framework.Worker.csproj", "{D4911CE0-4487-472C-9B1B-E011C8032D5D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectName.Shared.Infra.Server.IoC", "src\2_Domain\2.1_Shared\ProjectName.Shared.Infra.Server.IoC\ProjectName.Shared.Infra.Server.IoC.csproj", "{BD1ECB81-F260-47F7-911B-27301E2A5E81}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectName.Web.API.Service2", "src\1_Presentation\ProjectName.Web.API.Service2\ProjectName.Web.API.Service2.csproj", "{E49C8D3D-B7E7-4105-A422-754888E8B932}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Praticis.Framework.Worker.Data", "src\3_Framework\ConferIR.Framework.Worker.Data\Praticis.Framework.Worker.Data.csproj", "{44365B43-E1F5-4BE6-8B0A-2CA37FAA1CC7}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kafka", "Kafka", "{D654A832-A0F2-4742-A75A-E4C748B53F9E}"
 EndProject
@@ -83,13 +75,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IoC", "IoC", "{B3337E4C-D9C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{53BDEFC7-D7FC-4EEF-B7D6-048209D96F64}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectName.Customers.Infra.Server.IoC", "src\2_Domain\2.2_Customers\ProjectName.Customers.Infra.Server.IoC\ProjectName.Customers.Infra.Server.IoC.csproj", "{6A6C1386-2A7D-4EB0-A14C-A9DD28848015}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectName.Customers.Infra.Server.IoC", "src\2_Domain\2.2_Customers\ProjectName.Customers.Infra.Server.IoC\ProjectName.Customers.Infra.Server.IoC.csproj", "{6A6C1386-2A7D-4EB0-A14C-A9DD28848015}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{83E563C8-299D-4145-A1DC-C467FC5B7BE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectName.Shared.Kernel.Core", "src\2_Domain\2.1_Shared\ProjectName.Shared.Kernel.Core\ProjectName.Shared.Kernel.Core.csproj", "{FF3C01E7-EE91-47DD-AD4F-A31F3D894EFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProjectName.Shared.Kernel.Core", "src\2_Domain\2.1_Shared\ProjectName.Shared.Kernel.Core\ProjectName.Shared.Kernel.Core.csproj", "{FF3C01E7-EE91-47DD-AD4F-A31F3D894EFB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Praticis.Framework.Bus.Kafka.Abstractions", "src\3_Framework\Praticis.Framework.Bus.Kafka.Abstractions\Praticis.Framework.Bus.Kafka.Abstractions.csproj", "{94BFCA14-2895-407C-B0EF-B28B645C97DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Praticis.Framework.Bus.Kafka.Abstractions", "src\3_Framework\Praticis.Framework.Bus.Kafka.Abstractions\Praticis.Framework.Bus.Kafka.Abstractions.csproj", "{94BFCA14-2895-407C-B0EF-B28B645C97DF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Kafka", "Kafka", "{4AD16906-B741-45CE-B964-130AF1E93560}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Praticis.Framework.Worker.Abstractions", "src\3_Framework\Praticis.Framework.Worker.Abstractions\Praticis.Framework.Worker.Abstractions.csproj", "{BE651E6B-3301-43CF-AC6C-904F5A41BA54}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Praticis.Framework.Worker.Application", "src\3_Framework\Praticis.Framework.Worker.Application\Praticis.Framework.Worker.Application.csproj", "{FF9F4752-C691-40E3-A458-2DDD1F176C58}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Praticis.Framework.Worker", "src\3_Framework\Praticis.Framework.Worker\Praticis.Framework.Worker.csproj", "{AF1AD8D1-4BFB-423A-BA07-6C52FF3A24CA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Praticis.Framework.Worker.Kafka.Data", "src\3_Framework\Praticis.Framework.Worker.Kafka.Data\Praticis.Framework.Worker.Kafka.Data.csproj", "{273CC9DD-B84F-4531-B727-C3945A3FA21D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -145,18 +147,6 @@ Global
 		{B7B12567-2EE0-4FDB-92CD-36E997C8A326}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B7B12567-2EE0-4FDB-92CD-36E997C8A326}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B7B12567-2EE0-4FDB-92CD-36E997C8A326}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2DB9B9CD-72EA-4A21-8017-1321EAA0F2D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2DB9B9CD-72EA-4A21-8017-1321EAA0F2D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2DB9B9CD-72EA-4A21-8017-1321EAA0F2D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2DB9B9CD-72EA-4A21-8017-1321EAA0F2D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{231D197F-3B80-4942-9F48-F806B37F383D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{231D197F-3B80-4942-9F48-F806B37F383D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{231D197F-3B80-4942-9F48-F806B37F383D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{231D197F-3B80-4942-9F48-F806B37F383D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D4911CE0-4487-472C-9B1B-E011C8032D5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D4911CE0-4487-472C-9B1B-E011C8032D5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D4911CE0-4487-472C-9B1B-E011C8032D5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D4911CE0-4487-472C-9B1B-E011C8032D5D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BD1ECB81-F260-47F7-911B-27301E2A5E81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BD1ECB81-F260-47F7-911B-27301E2A5E81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD1ECB81-F260-47F7-911B-27301E2A5E81}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -165,10 +155,6 @@ Global
 		{E49C8D3D-B7E7-4105-A422-754888E8B932}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E49C8D3D-B7E7-4105-A422-754888E8B932}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E49C8D3D-B7E7-4105-A422-754888E8B932}.Release|Any CPU.Build.0 = Release|Any CPU
-		{44365B43-E1F5-4BE6-8B0A-2CA37FAA1CC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{44365B43-E1F5-4BE6-8B0A-2CA37FAA1CC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{44365B43-E1F5-4BE6-8B0A-2CA37FAA1CC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{44365B43-E1F5-4BE6-8B0A-2CA37FAA1CC7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CFA7BA8A-3DCA-4E28-8C9A-C6A2AC1AA4BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CFA7BA8A-3DCA-4E28-8C9A-C6A2AC1AA4BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFA7BA8A-3DCA-4E28-8C9A-C6A2AC1AA4BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -197,6 +183,22 @@ Global
 		{94BFCA14-2895-407C-B0EF-B28B645C97DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94BFCA14-2895-407C-B0EF-B28B645C97DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94BFCA14-2895-407C-B0EF-B28B645C97DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE651E6B-3301-43CF-AC6C-904F5A41BA54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE651E6B-3301-43CF-AC6C-904F5A41BA54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE651E6B-3301-43CF-AC6C-904F5A41BA54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE651E6B-3301-43CF-AC6C-904F5A41BA54}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF9F4752-C691-40E3-A458-2DDD1F176C58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF9F4752-C691-40E3-A458-2DDD1F176C58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF9F4752-C691-40E3-A458-2DDD1F176C58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF9F4752-C691-40E3-A458-2DDD1F176C58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF1AD8D1-4BFB-423A-BA07-6C52FF3A24CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF1AD8D1-4BFB-423A-BA07-6C52FF3A24CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF1AD8D1-4BFB-423A-BA07-6C52FF3A24CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF1AD8D1-4BFB-423A-BA07-6C52FF3A24CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{273CC9DD-B84F-4531-B727-C3945A3FA21D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{273CC9DD-B84F-4531-B727-C3945A3FA21D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{273CC9DD-B84F-4531-B727-C3945A3FA21D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{273CC9DD-B84F-4531-B727-C3945A3FA21D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -223,12 +225,8 @@ Global
 		{725165B1-3459-4EC5-8126-82AFCD2B3360} = {B3333A87-4C8B-4EF4-90F6-3795F0327148}
 		{B7B12567-2EE0-4FDB-92CD-36E997C8A326} = {303A8D54-D84A-48EA-8755-C402FB754FDF}
 		{E8301F26-7659-44E2-BB75-7E5ACF95F7C4} = {79F78C6A-9F27-4076-9961-68E2DD458A15}
-		{2DB9B9CD-72EA-4A21-8017-1321EAA0F2D4} = {E8301F26-7659-44E2-BB75-7E5ACF95F7C4}
-		{231D197F-3B80-4942-9F48-F806B37F383D} = {E8301F26-7659-44E2-BB75-7E5ACF95F7C4}
-		{D4911CE0-4487-472C-9B1B-E011C8032D5D} = {E8301F26-7659-44E2-BB75-7E5ACF95F7C4}
 		{BD1ECB81-F260-47F7-911B-27301E2A5E81} = {83E563C8-299D-4145-A1DC-C467FC5B7BE1}
 		{E49C8D3D-B7E7-4105-A422-754888E8B932} = {C69396B9-A01A-4173-AC1B-6D61EA1D50E6}
-		{44365B43-E1F5-4BE6-8B0A-2CA37FAA1CC7} = {E8301F26-7659-44E2-BB75-7E5ACF95F7C4}
 		{D654A832-A0F2-4742-A75A-E4C748B53F9E} = {3F83312B-A1CA-454D-A45E-FD94D0C2C769}
 		{CFA7BA8A-3DCA-4E28-8C9A-C6A2AC1AA4BA} = {D654A832-A0F2-4742-A75A-E4C748B53F9E}
 		{42CE5610-95DB-4235-94DA-0A4F84D26D29} = {6FDBA215-55F1-456E-845D-47E3ADA22306}
@@ -243,6 +241,11 @@ Global
 		{83E563C8-299D-4145-A1DC-C467FC5B7BE1} = {9671D62A-DAF6-4F86-A448-261F5159D4F2}
 		{FF3C01E7-EE91-47DD-AD4F-A31F3D894EFB} = {9671D62A-DAF6-4F86-A448-261F5159D4F2}
 		{94BFCA14-2895-407C-B0EF-B28B645C97DF} = {D654A832-A0F2-4742-A75A-E4C748B53F9E}
+		{4AD16906-B741-45CE-B964-130AF1E93560} = {E8301F26-7659-44E2-BB75-7E5ACF95F7C4}
+		{BE651E6B-3301-43CF-AC6C-904F5A41BA54} = {E8301F26-7659-44E2-BB75-7E5ACF95F7C4}
+		{FF9F4752-C691-40E3-A458-2DDD1F176C58} = {E8301F26-7659-44E2-BB75-7E5ACF95F7C4}
+		{AF1AD8D1-4BFB-423A-BA07-6C52FF3A24CA} = {E8301F26-7659-44E2-BB75-7E5ACF95F7C4}
+		{273CC9DD-B84F-4531-B727-C3945A3FA21D} = {4AD16906-B741-45CE-B964-130AF1E93560}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F1A0D4A5-0340-414A-9910-9AD15E3779A2}

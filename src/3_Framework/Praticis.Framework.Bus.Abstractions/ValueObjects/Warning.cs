@@ -45,11 +45,5 @@ namespace Praticis.Framework.Bus.Abstractions.ValueObjects
         #endregion
 
         public override string ToString() => base.Value;
-
-        public override void Dispose()
-        {
-            base.Dispose();
-            GC.SuppressFinalize(this);
-        }
     }
 }

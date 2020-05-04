@@ -15,7 +15,6 @@
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConferIR.Framework.Worker\Praticis.Framework.Worker.csproj" />
     <ProjectReference Include="..\Praticis.Framework.Bus.Abstractions\Praticis.Framework.Bus.Abstractions.csproj" />
     <ProjectReference Include="..\Praticis.Framework.Bus.Kafka.Abstractions\Praticis.Framework.Bus.Kafka.Abstractions.csproj" />
     <ProjectReference Include="..\Praticis.Framework.Bus.Kafka\Praticis.Framework.Bus.Kafka.csproj" />
@@ -24,6 +23,7 @@
     <ProjectReference Include="..\Praticis.Framework.Environment\Praticis.Framework.Environment.csproj" />
     <ProjectReference Include="..\Praticis.Framework.Pipeline.Abstractions\Praticis.Framework.Pipeline.Abstractions.csproj" />
     <ProjectReference Include="..\Praticis.Framework.Pipeline\Praticis.Framework.Pipeline.csproj" />
+    <ProjectReference Include="..\Praticis.Framework.Worker\Praticis.Framework.Worker.csproj" />
   </ItemGroup>
 
 </Project>

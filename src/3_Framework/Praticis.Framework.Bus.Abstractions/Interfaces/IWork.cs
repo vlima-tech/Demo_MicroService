@@ -15,7 +15,9 @@ namespace Praticis.Framework.Bus.Abstractions
         /// The request id can be CommandId, EventId, etc
         /// </summary>
         /// <returns></returns>
-        Guid GetRequestId();
+        Guid ObtainsRequestId();
+
+        string ObtainsWorkName();
 
         /// <summary>
         /// Change the request id.
@@ -32,6 +34,11 @@ namespace Praticis.Framework.Bus.Abstractions
         /// The type of work.
         /// </summary>
         WorkType WorkType { get; }
+
+        /// <summary>
+        /// The event type represented by work.
+        /// </summary>
+        EventType EventType { get; }
         
         /// <summary>
         /// Change work execution mode.

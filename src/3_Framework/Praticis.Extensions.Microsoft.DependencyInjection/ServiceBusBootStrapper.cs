@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,13 +12,15 @@ using Newtonsoft.Json;
 
 using Praticis.Framework.Bus;
 using Praticis.Framework.Bus.Abstractions;
-using Praticis.Framework.Bus.Abstractions.Enums;
 using Praticis.Framework.Bus.Abstractions.Events;
 using Praticis.Framework.Bus.Abstractions.ValueObjects;
 using Praticis.Framework.Bus.Handlers;
-using Praticis.Framework.Bus.Kafka.Abstractions;
-using Praticis.Framework.Bus.Kafka.Abstractions.Settings;
 using Praticis.Framework.Bus.Store;
+using Praticis.Framework.Bus.Kafka.Abstractions;
+using Praticis.Framework.Bus.Kafka.Abstractions.Collections;
+using Praticis.Framework.Bus.Kafka.Handlers;
+using Praticis.Framework.Worker.Application.Commands;
+using Praticis.Framework.Bus.Kafka.Abstractions.Settings;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -26,8 +29,9 @@ namespace Microsoft.Extensions.DependencyInjection
         public static void AddServiceBusModule(this IServiceCollection services)
         {
             // Add Mediator Service
-            
-            services.AddMediatR(AppDomain.CurrentDomain.GetAssemblies());
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
+            assemblies.Add(typeof(KafkaNotificationEventHandler).Assembly);
+            services.AddMediatR(assemblies.ToArray());
             
             // Service Bus Core
             /*
@@ -46,12 +50,10 @@ namespace Microsoft.Extensions.DependencyInjection
 
 
             // Event Sourcing
-
             services.AddScoped<IEventStore, EventStore>();
 
 
             // Notification Store
-
             services.AddScoped<List<Log>>();
             services.AddScoped<List<Notification>>();
             services.AddScoped<List<Warning>>();
@@ -68,24 +70,19 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public static void AddKafkaBusModule(this IServiceCollection services)
         {
-            services.AddSingleton<IKafkaSettings>(provider =>
+            services.AddSingleton<IKafkaProducerOptions>(provider =>
             {
-                var config = new KafkaSettings();
-                provider.GetService<IConfiguration>().GetSection("Kafka").Bind(config);
+                var config = new List<KafkaProducerOption>();
 
-                return config;
+                provider.GetService<IConfiguration>().GetSection("Kafka:Producers").Bind(config);
+
+                return new KafkaProducerOptionCollection(config);
             });
 
-            services.AddScoped<IProducer<KeyValuePair<EventType, Type>, IWork>>(provider =>
+            services.AddScoped<IProducer<KafkaKey, IWork>>(provider =>
             {
-                var brokers = string.Join(';', provider.GetService<IKafkaSettings>().Brokers);
-
-                var config = new ProducerConfig
-                {
-                    BootstrapServers = brokers
-                };
-                
-                var producerBuilder = new ProducerBuilder<KeyValuePair<EventType, Type>, IWork>(config);
+                var config = new ProducerConfig { };
+                var producerBuilder = new ProducerBuilder<KafkaKey, IWork>(config);
 
                 producerBuilder.SetKeySerializer(new ProducerSerializer());
                 producerBuilder.SetValueSerializer(new ProducerSerializer());
@@ -94,9 +91,9 @@ namespace Microsoft.Extensions.DependencyInjection
             });
         }
 
-        private class ProducerSerializer : IAsyncSerializer<IWork>, IAsyncSerializer<KeyValuePair<EventType, Type>>
+        private class ProducerSerializer : IAsyncSerializer<IWork>, IAsyncSerializer<KafkaKey>
         {
-            public async Task<byte[]> SerializeAsync(KeyValuePair<EventType, Type> data, SerializationContext context)
+            public async Task<byte[]> SerializeAsync(KafkaKey data, SerializationContext context)
             {
                 var json = Task.Run(() => JsonConvert.SerializeObject(data));
 
