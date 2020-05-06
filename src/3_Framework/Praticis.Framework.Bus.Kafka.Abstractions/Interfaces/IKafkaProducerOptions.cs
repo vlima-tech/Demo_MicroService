@@ -7,6 +7,6 @@ namespace Praticis.Framework.Bus.Kafka.Abstractions
 {
     public interface IKafkaProducerOptions : IEnumerable<IKafkaProducerOption>
     {
-        public IEnumerable<IKafkaProducerOption> IdentifyListeners(EventType eventType);
+        public IEnumerable<IKafkaProducerOption> IdentifyReceivers(EventType eventType);
     }
 }

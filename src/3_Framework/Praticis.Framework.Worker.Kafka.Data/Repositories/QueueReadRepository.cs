@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Confluent.Kafka;
 
 using Praticis.Framework.Bus.Abstractions;
-using Praticis.Framework.Bus.Abstractions.Enums;
 using Praticis.Framework.Bus.Kafka.Abstractions;
 using Praticis.Framework.Worker.Abstractions;
 using Praticis.Framework.Worker.Abstractions.Enums;
@@ -19,61 +18,52 @@ namespace Praticis.Framework.Worker.Kafka.Data.Repositories
 {
     public class QueueReadRepository : IQueueReadRepository
     {
+        private readonly IKafkaConsumerOptions _consumerOptions;
+        private QueueType _queue;
         private IConsumer<KafkaKey, IWork> _consumer { get; set; }
-
+        
         public QueueReadRepository(KafkaConsumerContext context, QueueType queue)
         {
+            this._queue = queue;
             this._consumer = context.GenerateConsumer(queue);
+            this._consumerOptions = context.Options;
         }
 
         public Task<IEnumerable<Work>> DequeueWorksAsync(int dequeueLength, CancellationToken cancellationToken)
         {
-            IList<Work> works = new List<Work>();
-            IList<Task> tasks = new List<Task>();
-            ConsumeResult<KafkaKey, IWork> result;
-            int count = 0;
+            var tasks = new List<Task<ConsumeResult<KafkaKey, IWork>>>();
+            bool repeat = true;
 
             try
             {
                 do
                 {
-                    
-                    var conf = new ConsumerConfig
+                    if (cancellationToken.IsCancellationRequested)
+                        break;
+
+                    var task = Task.Run(() => this._consumer.Consume(TimeSpan.FromSeconds(5)));
+
+                    tasks.Add(task);
+
+                    if(tasks.Count >= dequeueLength || tasks.Any(t => t.Status == TaskStatus.RanToCompletion && t.Result is null))
                     {
-                        GroupId = "test-consumer-group_005",
-                        BootstrapServers = "localhost:9092",
-                        AutoOffsetReset = AutoOffsetReset.Earliest
-                    };
+                        Task.WhenAll(tasks);
 
-                    var builder = new ConsumerBuilder<KafkaKey, IWork>(conf);
-                    var deserializer = new KafkaConsumerDeserializer();
-                    builder.SetKeyDeserializer(deserializer);
-                    builder.SetValueDeserializer(deserializer);
+                        repeat = !tasks.Any(t => t.Result is null);
 
-                    using (var c = builder.Build())
-                    {
-                        c.Subscribe("registered-customers");
-                        var cr = c.Consume(cancellationToken);
+                        var compatibleTasks = tasks.Where(t => t.Result != null && this._consumerOptions.IsExecutedInQueue(this._queue, t.Result.Message.Key));
 
+                        tasks.RemoveAll(t => !compatibleTasks.Contains(t));
                     }
-                    
-                        /*
-                        var task = Task.Run(() => this._consumer.Consume(cancellationToken));
-                        task.ContinueWith(r => ++count);
-                        */
 
-                    result = this._consumer.Consume(cancellationToken);
-                    
-                    //if(result.Message.Key.EventType)
-
-                } while (!result.IsPartitionEOF || count < dequeueLength);
+                } while (repeat && tasks.Count < dequeueLength);
             }
             catch(Exception e)
             {
 
             }
 
-            return Task.FromResult(works.AsEnumerable());
+            return Task.FromResult(tasks.Select(t => t.Result).Select(r => new Work(r.Message.Value)));
         }
     }
 }

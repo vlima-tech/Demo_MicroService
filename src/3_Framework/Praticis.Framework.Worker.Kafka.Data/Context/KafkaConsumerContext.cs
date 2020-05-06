@@ -2,18 +2,19 @@
 using System;
 using System.Linq;
 using System.Text;
+
 using Confluent.Kafka;
 using Newtonsoft.Json;
+
 using Praticis.Framework.Bus.Abstractions;
 using Praticis.Framework.Bus.Kafka.Abstractions;
-using Praticis.Framework.Worker.Abstractions;
 using Praticis.Framework.Worker.Abstractions.Enums;
 
 namespace Praticis.Framework.Worker.Kafka.Data.Context
 {
     public class KafkaConsumerContext
     {
-        protected IKafkaConsumerOptions Options { get; private set; }
+        public IKafkaConsumerOptions Options { get; private set; }
 
         public KafkaConsumerContext(IKafkaConsumerOptions options)
         {

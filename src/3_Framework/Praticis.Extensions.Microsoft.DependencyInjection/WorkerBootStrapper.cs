@@ -9,9 +9,9 @@ using Praticis.Framework.Bus.Abstractions;
 using Praticis.Framework.Bus.Abstractions.Enums;
 using Praticis.Framework.Bus.Kafka.Abstractions;
 using Praticis.Framework.Bus.Kafka.Abstractions.Collections;
+using Praticis.Framework.Bus.Kafka.Abstractions.Enums;
 using Praticis.Framework.Bus.Kafka.Abstractions.Settings;
 using Praticis.Framework.Worker.Abstractions;
-using Praticis.Framework.Worker.Abstractions.Repositories;
 using Praticis.Framework.Worker.Abstractions.Settings;
 using Praticis.Framework.Worker.Application.Commands;
 using Praticis.Framework.Worker.Core;
@@ -61,9 +61,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 config.Add(new KafkaConsumerOption
                 {
                     Topics = new List<string> { "registered-customers" },
-                    GroupName = "MicroService1",
+                    GroupName = "MicroService1_103",
                     Brokers = new List<string> { "localhost:9092" },
-                    FilterStrategy = Praticis.Framework.Bus.Kafka.Abstractions.Enums.FilterStrategy.Capture_Types,
+                    FilterStrategy = FilterStrategy.Capture_Types,
                     EventTypes = new List<EventType> { EventType.Registered_Customer },
                     Queue = new QueueOption
                     {

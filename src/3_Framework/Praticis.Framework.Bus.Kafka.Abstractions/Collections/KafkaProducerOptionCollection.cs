@@ -30,7 +30,7 @@ namespace Praticis.Framework.Bus.Kafka.Abstractions.Collections
 
         #endregion
 
-        public IEnumerable<IKafkaProducerOption> IdentifyListeners(EventType eventType)
+        public IEnumerable<IKafkaProducerOption> IdentifyReceivers(EventType eventType)
         {
             List<IKafkaProducerOption> collection = new List<IKafkaProducerOption>();
 

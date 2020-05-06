@@ -17,19 +17,19 @@ namespace Praticis.Framework.Bus.Kafka.Handlers
     public class KafkaNotificationEventHandler : IEventHandler<EnqueueWorkEvent>
     {
         private readonly IServiceBus _serviceBus;
-        private readonly IKafkaProducerOptions _kafkaOptions;
+        private readonly IKafkaProducerOptions _producerOptions;
         private IProducer<KafkaKey, IWork> _producer { get; set; }
         
         public KafkaNotificationEventHandler(IServiceProvider provider)
         {
             this._serviceBus = provider.GetService<IServiceBus>();
-            this._kafkaOptions = provider.GetService<IKafkaProducerOptions>();
+            this._producerOptions = provider.GetService<IKafkaProducerOptions>();
             this._producer = provider.GetService<IProducer<KafkaKey, IWork>>();
         }
 
         public async Task Handle(EnqueueWorkEvent notification, CancellationToken cancellationToken)
         {
-            var producers = this._kafkaOptions.IdentifyListeners(notification.Work.EventType);
+            var producers = this._producerOptions.IdentifyReceivers(notification.Work.EventType);
 
             if (!producers.Any())
                 return;
